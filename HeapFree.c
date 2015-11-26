@@ -208,10 +208,7 @@ NTSTATUS RtlGetModuleBase(IN LPCSTR     pszModuleName,OUT PVOID*    ppBaseAddres
 
     __try
     {
-        //-f--> Por motivos religiosos, temos que passar algum ponteiro
-        //      no segundo parâmetro da chamada abaixo, mesmo que o número
-        //      de bytes a serem utilizados seja zero. Caso contrário,
-        //      se passarmos NULL, obteremos STATUS_ACCESS_VIOLATION.
+
         nts = ZwQuerySystemInformation(SystemModuleInformation,
                                        &ulLength,
                                        0,
@@ -223,15 +220,14 @@ NTSTATUS RtlGetModuleBase(IN LPCSTR     pszModuleName,OUT PVOID*    ppBaseAddres
             return nts;
         }
 
-        //-f--> Agora alocamos o buffer necessário para trazer
-        //      todos od modulos
+     
         if (!(pBuffer = ExAllocatePool(PagedPool, ulLength)))
         {
             ASSERT(FALSE);
             return STATUS_NO_MEMORY;
         }
 
-        //-f--> Passamos o buffer completo desta vez
+     
         nts = ZwQuerySystemInformation(SystemModuleInformation,
                                        pBuffer,
                                        ulLength,
@@ -240,18 +236,16 @@ NTSTATUS RtlGetModuleBase(IN LPCSTR     pszModuleName,OUT PVOID*    ppBaseAddres
         {
             nts = STATUS_OBJECT_NAME_NOT_FOUND;
 
-            //-f--> A primeira coisa que recebemos no buffer é a
-            //      quantidade de estruturas existem no array que
-            //      segue a frente.
+    
             ulLength = *(PULONG)pBuffer;
             pModuleInfo = (PSYSTEM_MODULE_INFORMATION)((PULONG)pBuffer + 1);
 
             while(ulLength--)
             {
-                //-f--> Procuramos pelo módulo que nos interessa
+
                 if (!_stricmp(&pModuleInfo[ulLength].ImageName[pModuleInfo[ulLength].ModuleNameOffset],pszModuleName))
                 {
-                    //-f--> Precisamos apenas do Endereço Base
+              
                     *ppBaseAddress = pModuleInfo[ulLength].Base;
 					*sizeofimage= pModuleInfo[ulLength].Size;
                     nts = STATUS_SUCCESS;
@@ -262,12 +256,12 @@ NTSTATUS RtlGetModuleBase(IN LPCSTR     pszModuleName,OUT PVOID*    ppBaseAddres
     }
     __except(EXCEPTION_EXECUTE_HANDLER)
     {
-        //-f--> Se estivermos em DEBUG vamos chamar a atenção para este fato
+
         ASSERT(FALSE);
         nts = GetExceptionCode();
     }
 
-    //-f--> Libera buffer utilizado na pesquisa
+
     if (pBuffer)
         ExFreePool(pBuffer);
 

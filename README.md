@@ -1,11 +1,18 @@
-# Win32k-Fuzzer
-Win32k.sys for Windows  is like Java for internet.
+# Win32k-Fuzzer(Win32k.sys for Windows  is like Java for internet.)
+
+****
+credit to
+https://twitter.com/R00tkitSMM (firozimaysam@gmail.com)
+****
+
 
 this project have two part:
-1: UAF detector  in Win32k
-2: Win32k.sys fuzzer 
+1. UAF detector  in Win32k
+2. Win32k.sys fuzzer 
 
 So i just publish First part
+
+Win32k.sys for Windows  is like Java for internet.
 
 in this days 0 day in kernel is more valuable than before because of limitation forced by sandboxes , every RCE Exploit need second phrase to bypass this Limitation to gain full system access.
 
@@ -53,9 +60,9 @@ LABEL_28:
   }
   ````
   
-1: DesktopAlloc ( Heap )
-2: SharedAlloc ( heap )
-3: in32AllocPoolWithQuotaTagZInit, Win32AllocPoolWithTagZInit (Pool )
+1. DesktopAlloc ( Heap )
+2. SharedAlloc ( heap )
+3. in32AllocPoolWithQuotaTagZInit, Win32AllocPoolWithTagZInit (Pool )
 
 
 for example Menu object use DesktopAlloc and Accelerator use Pool.

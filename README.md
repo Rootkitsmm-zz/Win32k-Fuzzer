@@ -75,7 +75,7 @@ in user mode  code we can  use gflags to enable page heap
 gflags.exe /i iexplore.exe +hpa +ust to to enable the page heap (HPA)
 ```
 we also can enable page heap system wide bug this dont effect Heap implementation in kernel 
-thre was also "special pool" that can be enable with verifier but it dont help us for heap based objects/memeroy.
+thre was also "special pool" that can be enable with verifier but it dont help us for heap based objects/memory.
 
 
 so my idea is patching RtlFreeHeap and fill freed memory with invalid content like 0c0c0c0c .

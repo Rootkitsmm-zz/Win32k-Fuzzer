@@ -67,7 +67,7 @@ LABEL_28:
 
 for example Menu object use DesktopAlloc and Accelerator use Pool.
 
-for objects that use Heap memory ,when object life end, OS call RtlFreeHeap to free used memory,after RtlFreeHeap return  freed memory still have ols/valid contents, so if other part of win32k.sys use freed memory nothing will happen because it use memory with old contents ( no BSOD ) and we will miss Bug.
+for objects that use Heap memory ,when object life end, OS call RtlFreeHeap to free used memory,after RtlFreeHeap return  freed memory still have old/valid contents, so if other part of win32k.sys use freed memory nothing will happen because it use memory with old contents ( no BSOD ) and we will miss Bug.
 until now researchers just find this kind of bugs with reverse engineering . they  must allocate object in same size to produce crash. and how know when OS will use freed memory ? 
 
 in user mode  code we can  use gflags to enable page Heap

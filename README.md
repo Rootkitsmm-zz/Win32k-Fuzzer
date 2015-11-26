@@ -61,7 +61,7 @@ LABEL_28:
   ````
   
 1. DesktopAlloc ( Heap )
-2. SharedAlloc ( heap )
+2. SharedAlloc ( Heap )
 3. in32AllocPoolWithQuotaTagZInit, Win32AllocPoolWithTagZInit (Pool )
 
 
@@ -70,16 +70,16 @@ for example Menu object use DesktopAlloc and Accelerator use Pool.
 for objects that use Heap memory ,when object life end, OS call RtlFreeHeap to free used memory,after RtlFreeHeap return  freed memory still have ols/valid contents, so if other part of win32k.sys use freed memory nothing will happen because it use memory with old contents ( no BSOD ) and we will miss Bug.
 until now researchers just find this kind of bugs with reverse engineering . they  must allocate object in same size to produce crash. and how know when OS will use freed memory ? 
 
-in user mode  code we can  use gflags to enable page heap
+in user mode  code we can  use gflags to enable page Heap
 ```
-gflags.exe /i iexplore.exe +hpa +ust to to enable the page heap (HPA)
+gflags.exe /i iexplore.exe +hpa +ust to to enable the page Heap (HPA)
 ```
-we also can enable page heap system wide bug this dont effect Heap implementation in kernel 
-thre was also "special pool" that can be enable with verifier but it dont help us for heap based objects/memory.
+we also can enable page Heap system wide bug this dont effect Heap implementation in kernel 
+thre was also "special pool" that can be enable with verifier but it dont help us for Heap based objects/memory.
 
 
 so my idea is patching RtlFreeHeap and fill freed memory with invalid content like 0c0c0c0c .
-for finding heap chunk size i used unexported function RtlSizeHeap(thanks @ponez for finding this function)
+for finding Heap chunk size i used unexported function RtlSizeHeap(thanks @ponez for finding this function)
 
 ```C++
 __declspec(naked) my_function_detour_RtlFreeHeap()
@@ -121,6 +121,7 @@ __declspec(naked) my_function_detour_RtlFreeHeap()
 with help of this function we can detect when win32k use freed heap memory.  we can also automatically find out how OS useing freed memory(does it use free memory to write/read/execute? )
 
 i cheked this Detector with some old UAF vulnerabilities in Win32k and Driver detect UAF in win32k.sys.
+maybe ther was another was to do this!?(i dont know maybe with gflags we can enable page heap for kernel) 
 
 
 

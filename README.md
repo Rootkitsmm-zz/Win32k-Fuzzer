@@ -19,7 +19,7 @@ many published local privilege escalation vulnerabilities is based  on Bug in Wi
 
 Win32 object allocation : 
 based on Object type win32 with help of HMAllocObject function use heap or Pool for Allocating memory for object
-````
+```c++
 int __stdcall HMAllocObject(int a1, PVOID Object, char a3, ULONG Size)
 {
 	....
@@ -80,7 +80,7 @@ thre was also "special pool" that can be enable with verifier but it dont help u
 so my idea is patching RtlFreeHeap and fill freed memory with invalid content like 0c0c0c0c .
 for finding heap chunk size i used unexported function RtlSizeHeap(thanks @ponez for finding this function)
 
-````
+```C++
 __declspec(naked) my_function_detour_RtlFreeHeap()
 {
 	//PVOID  func=RtlSizeHeap;;

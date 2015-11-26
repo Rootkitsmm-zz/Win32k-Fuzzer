@@ -1,6 +1,11 @@
 # Win32k-Fuzzer
-
 Win32k.sys for Windows  is like Java for internet.
+
+this project have two part:
+1: UAF detector  in Win32k
+2: Win32k.sys fuzzer 
+
+So i just publish First part
 
 in this days 0 day in kernel is more valuable than before because of limitation forced by sandboxes , every RCE Exploit need second phrase to bypass this Limitation to gain full system access.
 
@@ -102,11 +107,15 @@ __declspec(naked) my_function_detour_RtlFreeHeap()
 		mov edi, ebx; // address of heap chunk
 		rep stos byte ptr es:[edi]
 		POPAD
-		````
+````
+
+
 
 with help of this function we can detect when win32k use freed heap memory.  we can also automatically find out how OS useing freed memory(does it use free memory to write/read/execute? )
 
-i cheked this Detector  with  olds UAF vulebliry in Win32k and  my driver detect UAF in win32k.sys :) 
+i cheked this Detector with some old UAF vulnerabilities in Win32k and Driver detect UAF in win32k.sys.
+
+
 
 
 

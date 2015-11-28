@@ -315,8 +315,10 @@ NTSTATUS DriverEntry( IN PDRIVER_OBJECT theDriverObject, IN PUNICODE_STRING theR
     if (!NT_SUCCESS(nts))
         return nts;
 	
-	
+	RtlSizeHeap=NULL;
 	RtlSizeHeap=ScanForRtlSizeHeap((ULONG_PTR)pBaseAddress,Sizeofimage);
+	
+	if(!RtlSizeHeap)return STATUS_UNSUCCESSFUL;
 	
 	DbgPrintEx( DPFLTR_IHVVIDEO_ID,  DPFLTR_ERROR_LEVEL,"pBaseAddress %x , Sizeofimage %x, RtlSizeHeap %x \r\n",pBaseAddress,Sizeofimage,RtlSizeHeap);
 

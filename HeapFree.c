@@ -315,7 +315,7 @@ NTSTATUS DriverEntry( IN PDRIVER_OBJECT theDriverObject, IN PUNICODE_STRING theR
     if (!NT_SUCCESS(nts))
         return nts;
 	
-	RtlSizeHeap=NULL;
+	
 	RtlSizeHeap=ScanForRtlSizeHeap((ULONG_PTR)pBaseAddress,Sizeofimage);
 	
 	if(!RtlSizeHeap)return STATUS_UNSUCCESSFUL;
